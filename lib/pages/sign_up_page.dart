@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../constants.dart';
 import '../modules/signup/sign_up_cubit.dart';
 import '../modules/signup/sign_up_state.dart';
 
@@ -25,9 +26,9 @@ class _SignUpState extends State<SignUp>{
     final signUpCubit = context.watch<SignUpCubit>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign Up'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Sign Up'),
+      // ),
       body: Center(
         child: BlocConsumer<SignUpCubit, SignUpState>(
           listener: (context, state) {
@@ -122,6 +123,9 @@ class _SignUpState extends State<SignUp>{
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor, // Background color
+                      ),
                       onPressed: () {
                         signUpCubit.signUp(
                           _nameController.text,
@@ -149,7 +153,7 @@ class _SignUpState extends State<SignUp>{
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: const Text('Log In'),
+                          child: const Text('Log In', style: TextStyle(color: primaryColor)),
                         ),
                       ],
                     ),
