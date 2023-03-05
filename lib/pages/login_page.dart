@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grocerygo/constants.dart';
 import 'package:grocerygo/pages/sign_up_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constants.dart';
 import '../models/user_model.dart';
 import '../modules/login/login_cubit.dart';
 import '../modules/login/login_state.dart';
@@ -10,10 +12,12 @@ import 'ResetPassword_page.dart';
 import 'home.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key});
+  //const LoginPage({Key? key});
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
+  //State<HomePage> createState() => _HomePageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -84,6 +88,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor, // Background color
+                  ),
                   onPressed: () {
                     loginCubit.login(
                         _emailController.text, _passwordController.text);
@@ -100,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     );
                   },
-                  child: const Text('Forgot Password?'),
+                  child: const Text('Forgot Password?', style: TextStyle(color: primaryColor),),
                 ),
                 const SizedBox(height: 5),
                 Row(
@@ -116,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         );
                       },
-                      child: const Text('Register'),
+                      child: const Text('Register', style: TextStyle(color: primaryColor)),
                     ),
                   ],
                 ),
@@ -131,9 +138,9 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _saveUserDetails(User user) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', user.token ?? '');
-    await prefs.setInt('userId', user.id ?? 0);
-    await prefs.setString('name', user.name ?? '');
-    await prefs.setString('phone', user.phone ?? '');
-    await prefs.setString('email', user.email ?? '');
+    await prefs.setInt('userId', user.user.id ?? 0);
+    await prefs.setString('name', user.user.name ?? '');
+    await prefs.setString('phone', user.user.phone ?? '');
+    await prefs.setString('email', user.user.email ?? '');
   }
 }

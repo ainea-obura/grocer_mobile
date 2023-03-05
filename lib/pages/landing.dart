@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grocerygo/constants.dart';
 
 import 'login_page.dart';
 
@@ -38,7 +39,7 @@ class Landing extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 80,
+              height: 100,
             ),
             Container(
               width: 250,
@@ -55,7 +56,7 @@ class Landing extends StatelessWidget {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: Colors.red, // foreground
+                  backgroundColor: primaryColor, // foreground
                 ),
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginPage()));
