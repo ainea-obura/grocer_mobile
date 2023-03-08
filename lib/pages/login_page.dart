@@ -4,7 +4,6 @@ import 'package:grocerygo/constants.dart';
 import 'package:grocerygo/pages/sign_up_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../constants.dart';
 import '../models/user_model.dart';
 import '../modules/login/login_cubit.dart';
 import '../modules/login/login_state.dart';
@@ -137,10 +136,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _saveUserDetails(User user) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', user.token ?? '');
-    await prefs.setInt('userId', user.user.id ?? 0);
-    await prefs.setString('name', user.user.name ?? '');
-    await prefs.setString('phone', user.user.phone ?? '');
-    await prefs.setString('email', user.user.email ?? '');
+    await prefs.setString('token', user.token);
+    await prefs.setInt('userId', user.user.id);
+    await prefs.setString('name', user.user.name);
+    await prefs.setString('phone', user.user.phone);
+    await prefs.setString('email', user.user.email);
   }
 }
