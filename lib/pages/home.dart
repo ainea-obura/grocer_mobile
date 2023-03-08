@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../modules/category/category_cubit.dart';
-import '../modules/logout/logout_cubit.dart';
+//import '../modules/logout/logout_cubit.dart';
+import '../modules/products/products_cubit.dart';
 import '../widgets/bottomNavBar.dart';
 import '../widgets/categories_widget.dart';
+import '../widgets/products_widget.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,7 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? _name;
+  late String _name;
   // String? _phone;
   // String? _email;
   //String? _token;
@@ -23,15 +26,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final cubit = context.read<CategoriesCubit>();
-      cubit.getCategories();
-    });
+    final cubit = context.read<CategoriesCubit>();
+    cubit.getCategories();
+    final productCubit = context.read<ProductsCubit>();
+    productCubit.fetchProducts();
 
     SharedPreferences.getInstance().then((prefs) {
       setState(() {
-        //_id = pref.getInt('id');
-        _name = prefs.getString('name');
+        _name = prefs.getString('name') ?? '';
         //_token = prefs.getString('token');
       });
     });
@@ -60,38 +62,36 @@ class _HomePageState extends State<HomePage> {
         ],
         title: const Text('Home', style: TextStyle(color: Colors.black)),
       ),
-
-
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search',
-                    prefixIcon: Icon(Icons.search, color: Colors.grey),
-                    border: InputBorder.none,
-                  ),
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  prefixIcon: Icon(Icons.search, color: Colors.grey),
+                  border: InputBorder.none,
                 ),
               ),
-              //const SizedBox(height: 16,),
-              CategoriesWidget(),
-              //Text('Name: $_name'),
-              //Text('Token: $_token'),
-            ],
-          ),
+            ),
+            //const SizedBox(height: 3,),
+            // const Expanded(
+            //   child: CategoriesWidget(),
+            // ),
+            const CategoriesWidget(),
+            const SizedBox(height: 3,),
+            const Expanded(
+              child: ProductsWidget(),
+            ),
+          ],
         ),
       ),
-
       bottomNavigationBar: const BottomNavBar(),
     );
-
   }
 }
