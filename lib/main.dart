@@ -1,12 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grocerygo/pages/cart.dart';
 import 'package:grocerygo/pages/landing.dart';
 import 'package:grocerygo/repository/category_repository.dart';
 import 'package:grocerygo/repository/login_repository.dart';
 import 'package:grocerygo/repository/products_repository.dart';
 import 'package:grocerygo/repository/sign_up_repository.dart';
 
+import 'modules/cart/cart_cubit.dart';
 import 'modules/category/category_cubit.dart';
 import 'modules/login/login_cubit.dart';
 import 'modules/products/products_cubit.dart';
@@ -34,7 +36,14 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ProductsCubit(ProductsRepository()),
-        )
+        ),
+        BlocProvider(
+          create: (context) => CartCubit(),
+          child: const CartPage(),
+        ),
+        // BlocProvider(
+        //   create: (context) => CartCubit(),
+        // )
       ],
       child: const MaterialApp(
         home: Landing(),

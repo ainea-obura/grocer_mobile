@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grocerygo/models/cart_item.dart';
 
 import '../constants.dart';
+import '../modules/cart/cart_cubit.dart';
 import '../modules/products/products_cubit.dart';
 import '../modules/products/products_state.dart';
 import '../pages/product_details.dart';
@@ -119,7 +121,7 @@ class ProductsWidget extends StatelessWidget {
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    // Handle add to cart
+                                    BlocProvider.of<CartCubit>(context).addItem(product);
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: primaryColor,
@@ -129,6 +131,45 @@ class ProductsWidget extends StatelessWidget {
                                   ),
                                   child: const Text('Add to Cart'),
                                 ),
+                                // child: ElevatedButton(
+                                //   onPressed: () {
+                                //     context.read<CartCubit>().addToCart(CartItem(
+                                //       id: product.id,
+                                //       title: product.title,
+                                //       price: product.price,
+                                //       thumbnail: product.thumbnail,
+                                //       quantity: 1,
+                                //     ));
+                                //   },
+                                //   style: ElevatedButton.styleFrom(
+                                //     backgroundColor: primaryColor,
+                                //     shape: RoundedRectangleBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //     ),
+                                //   ),
+                                //   child: const Text('Add to Cart'),
+                                // ),
+                                // child: ElevatedButton(
+                                //   onPressed: () {
+                                //     //add to cart
+                                //
+                                //     // Show snackbar to confirm product added to cart
+                                //     ScaffoldMessenger.of(context).showSnackBar(
+                                //       SnackBar(
+                                //         content: Text('${product.title} added to cart'),
+                                //         duration: const Duration(seconds: 2),
+                                //         behavior: SnackBarBehavior.floating,
+                                //       ),
+                                //     );
+                                //   },
+                                //   style: ElevatedButton.styleFrom(
+                                //     backgroundColor: primaryColor,
+                                //     shape: RoundedRectangleBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //     ),
+                                //   ),
+                                //   child: const Text('Add to Cart'),
+                                // ),
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -149,6 +190,17 @@ class ProductsWidget extends StatelessWidget {
     );
   }
 }
+
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+//
+// import '../constants.dart';
+// import '../modules/cart/cart_cubit.dart';
+// import '../modules/products/products_cubit.dart';
+// import '../modules/products/products_state.dart';
+// import '../pages/product_details.dart';
+//
+//
 // class ProductsWidget extends StatelessWidget {
 //   const ProductsWidget({Key? key}) : super(key: key);
 //
@@ -197,7 +249,13 @@ class ProductsWidget extends StatelessWidget {
 //                     final product = products.product[index];
 //                     return GestureDetector(
 //                       onTap: () {
-//                         // Handle product tap
+//                         // Redirect to product details page when tapped
+//                         Navigator.push(
+//                           context,
+//                           MaterialPageRoute(
+//                             builder: (context) => ProductDetailsPage(product: product),
+//                           ),
+//                         );
 //                       },
 //                       child: Container(
 //                         decoration: BoxDecoration(
@@ -255,7 +313,17 @@ class ProductsWidget extends StatelessWidget {
 //                                 width: double.infinity,
 //                                 child: ElevatedButton(
 //                                   onPressed: () {
-//                                     // Handle add to cart
+//                                     // Add product to cart
+//                                     context.read<CartCubit>().addProduct(product);
+//
+//                                     // Show snackbar to confirm product added to cart
+//                                     ScaffoldMessenger.of(context).showSnackBar(
+//                                       SnackBar(
+//                                         content: Text('${product.title} added to cart'),
+//                                         duration: const Duration(seconds: 2),
+//                                         behavior: SnackBarBehavior.floating,
+//                                       ),
+//                                     );
 //                                   },
 //                                   style: ElevatedButton.styleFrom(
 //                                     backgroundColor: primaryColor,
@@ -265,6 +333,18 @@ class ProductsWidget extends StatelessWidget {
 //                                   ),
 //                                   child: const Text('Add to Cart'),
 //                                 ),
+//                                 // child: ElevatedButton(
+//                                 //   onPressed: () {
+//                                 //     // Handle add to cart
+//                                 //   },
+//                                 //   style: ElevatedButton.styleFrom(
+//                                 //     backgroundColor: primaryColor,
+//                                 //     shape: RoundedRectangleBorder(
+//                                 //       borderRadius: BorderRadius.circular(10),
+//                                 //     ),
+//                                 //   ),
+//                                 //   child: const Text('Add to Cart'),
+//                                 // ),
 //                               ),
 //                             ),
 //                             const SizedBox(height: 10),
@@ -285,7 +365,6 @@ class ProductsWidget extends StatelessWidget {
 //     );
 //   }
 // }
-
 
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
