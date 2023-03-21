@@ -1,48 +1,9 @@
-// import 'package:flutter/material.dart';
-//
-// import '../models/products_model.dart';
-//
-// class ProductDetailsPage extends StatelessWidget {
-//   final Product product;
-//
-//   const ProductDetailsPage({Key? key, required this.product}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(product.title),
-//       ),
-//       body: SingleChildScrollView(
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             AspectRatio(
-//               aspectRatio: 1,
-//               child: Image.network(
-//                 'http://192.168.8.199:8000${product.thumbnail}',
-//                 fit: BoxFit.cover,
-//               ),
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.all(16.0),
-//               child: Text(
-//                 product.description,
-//                 style: Theme.of(context).textTheme.bodyText1,
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../constants.dart';
 import '../models/products_model.dart';
-//import '../modules/cart/cart_cubit.dart';
-//import '../modules/products/products.dart';
+import '../modules/cart/cart_cubit.dart';
+import '../widgets/bottomNavBar.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   final Product product;
@@ -53,9 +14,11 @@ class ProductDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
         elevation: 0.0,
         //title: Text(product.title),
+        //centerTitle: true,
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -66,7 +29,7 @@ class ProductDetailsPage extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                 child: Image.network(
-                  'http://192.168.8.199:8000${product.thumbnail}',
+                  'http://192.168.8.108:8000${product.thumbnail}',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -90,29 +53,33 @@ class ProductDetailsPage extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             const Spacer(),
-            // SizedBox(
-            //   width: double.infinity,
-            //   child: BlocBuilder<CartCubit, CartState>(
-            //     builder: (context, state) {
-            //       return ElevatedButton(
-            //         onPressed: () {
-            //           context.read<CartCubit>().addItem(product);
-            //         },
-            //         style: ElevatedButton.styleFrom(
-            //           primary: primaryColor,
-            //           shape: RoundedRectangleBorder(
-            //             borderRadius: BorderRadius.circular(10),
-            //           ),
-            //         ),
-            //         child: const Text('Add to Cart'),
-            //       );
-            //     },
-            //   ),
-            // ),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  BlocProvider.of<CartCubit>(context).addItem(product);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('${product.title} added to cart'),
+                      duration: const Duration(seconds: 2),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Text('Add to Cart'),
+              ),
+            ),
             const SizedBox(height: 16),
           ],
         ),
       ),
+      bottomNavigationBar: const BottomNavBar()
     );
   }
 }
