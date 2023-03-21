@@ -1,59 +1,11 @@
-// import 'package:flutter/material.dart';
-//
-// class BottomNavBar extends StatefulWidget {
-//   const BottomNavBar({Key? key}) : super(key: key);
-//
-//   @override
-//   State<BottomNavBar> createState() => _BottomNavBarState();
-//   // @override
-//   // _BottomNavBarState createState() => _BottomNavBarState();
-// }
-//
-// class _BottomNavBarState extends State<BottomNavBar> {
-//   int _selectedIndex = 0;
-//
-//   static const List<Widget> _widgetOptions = <Widget>[
-//     Text('Home'),
-//     Text('Cart'),
-//     Text('Profile'),
-//   ];
-//
-//   void _onItemTapped(int index) {
-//     setState(() {
-//       _selectedIndex = index;
-//     });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return BottomNavigationBar(
-//       items: const <BottomNavigationBarItem>[
-//         BottomNavigationBarItem(
-//           icon: Icon(Icons.home),
-//           label: 'Home',
-//         ),
-//         BottomNavigationBarItem(
-//           icon: Icon(Icons.shopping_cart),
-//           label: 'Cart',
-//         ),
-//         BottomNavigationBarItem(
-//           icon: Icon(Icons.person),
-//           label: 'Profile',
-//         ),
-//       ],
-//       currentIndex: _selectedIndex,
-//       selectedItemColor: Colors.green,
-//       onTap: _onItemTapped,
-//       type: BottomNavigationBarType.fixed,
-//       showSelectedLabels: true,
-//       showUnselectedLabels: true,
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../models/cart_item.dart';
+import '../modules/cart/cart_cubit.dart';
 import '../pages/cart.dart';
+import '../pages/home.dart';
 import '../pages/profile.dart';
+import 'cart_count_widget.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({Key? key}) : super(key: key);
@@ -61,9 +13,9 @@ class BottomNavBar extends StatefulWidget {
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
-
 class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
+  int _cartItemsCount = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Home'),
@@ -86,32 +38,56 @@ class _BottomNavBarState extends State<BottomNavBar> {
           MaterialPageRoute(builder: (context) => const CartPage()),
         );
       }
+      else if(index ==0){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_cart),
-          label: 'Cart',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile',
-        ),
-      ],
-      currentIndex: _selectedIndex,
+    return BlocListener<CartCubit, List<CartItem>>(
+      listener: (context, state) {
+        setState(() {
+          _cartItemsCount = state.length;
+        });
+      },
+      child: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Stack(
+              children: [
+                const Icon(Icons.shopping_cart),
+                if (_cartItemsCount > 0)
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: CartCount(itemCount: _cartItemsCount),
+                  ),
+              ],
+            ),
+            label: 'Cart',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex,
       selectedItemColor: Colors.green,
       onTap: _onItemTapped,
       type: BottomNavigationBarType.fixed,
       showSelectedLabels: true,
       showUnselectedLabels: true,
+      )
     );
   }
 }

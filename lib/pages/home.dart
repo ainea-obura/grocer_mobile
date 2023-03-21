@@ -63,35 +63,37 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Home', style: TextStyle(color: Colors.black)),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  prefixIcon: Icon(Icons.search, color: Colors.grey),
-                  border: InputBorder.none,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search',
+                    prefixIcon: Icon(Icons.search, color: Colors.grey),
+                    border: InputBorder.none,
+                  ),
                 ),
               ),
-            ),
-            //const SizedBox(height: 3,),
-            // const Expanded(
-            //   child: CategoriesWidget(),
-            // ),
-            const CategoriesWidget(),
-            const SizedBox(height: 3,),
-            const Expanded(
-              child: ProductsWidget(),
-            ),
-          ],
+              const SizedBox(height: 3,),
+              const CategoriesWidget(),
+              const SizedBox(height: 3,),
+              SizedBox(
+                height: MediaQuery.of(context).size.height - 220, // adjust the height as needed
+                child: const ProductsWidget(),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: const BottomNavBar(),
     );
   }
 }
+
+
